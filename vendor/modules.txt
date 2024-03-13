@@ -1,0 +1,166 @@
+# github.com/KyleBanks/depth v1.2.1
+## explicit
+github.com/KyleBanks/depth
+# github.com/andybalholm/brotli v1.0.5
+## explicit; go 1.12
+github.com/andybalholm/brotli
+# github.com/create-go-app/fiber-go-template v1.14.0
+## explicit; go 1.17
+github.com/create-go-app/fiber-go-template/docs
+github.com/create-go-app/fiber-go-template/pkg/repository
+github.com/create-go-app/fiber-go-template/pkg/utils
+# github.com/go-logr/logr v1.2.4
+## explicit; go 1.16
+github.com/go-logr/logr
+github.com/go-logr/logr/funcr
+# github.com/go-logr/stdr v1.2.2
+## explicit; go 1.16
+github.com/go-logr/stdr
+# github.com/go-openapi/jsonpointer v0.19.5
+## explicit; go 1.13
+github.com/go-openapi/jsonpointer
+# github.com/go-openapi/jsonreference v0.20.0
+## explicit; go 1.13
+github.com/go-openapi/jsonreference
+github.com/go-openapi/jsonreference/internal
+# github.com/go-openapi/spec v0.20.6
+## explicit; go 1.13
+github.com/go-openapi/spec
+# github.com/go-openapi/swag v0.21.1
+## explicit; go 1.11
+github.com/go-openapi/swag
+# github.com/go-playground/locales v0.14.0
+## explicit; go 1.13
+github.com/go-playground/locales
+github.com/go-playground/locales/currency
+# github.com/go-playground/universal-translator v0.18.0
+## explicit; go 1.13
+github.com/go-playground/universal-translator
+# github.com/go-playground/validator/v10 v10.11.0
+## explicit; go 1.13
+github.com/go-playground/validator/v10
+# github.com/gofiber/contrib/otelfiber v1.0.10
+## explicit; go 1.18
+github.com/gofiber/contrib/otelfiber
+# github.com/gofiber/fiber/v2 v2.52.2
+## explicit; go 1.20
+github.com/gofiber/fiber/v2
+github.com/gofiber/fiber/v2/internal/schema
+github.com/gofiber/fiber/v2/log
+github.com/gofiber/fiber/v2/middleware/filesystem
+github.com/gofiber/fiber/v2/utils
+# github.com/gofiber/swagger v1.0.0
+## explicit; go 1.18
+github.com/gofiber/swagger
+# github.com/golang-jwt/jwt/v4 v4.4.1
+## explicit; go 1.16
+github.com/golang-jwt/jwt/v4
+# github.com/google/uuid v1.5.0
+## explicit
+github.com/google/uuid
+# github.com/joho/godotenv v1.5.1
+## explicit; go 1.12
+github.com/joho/godotenv
+github.com/joho/godotenv/autoload
+# github.com/josharian/intern v1.0.0
+## explicit; go 1.5
+github.com/josharian/intern
+# github.com/klauspost/compress v1.17.0
+## explicit; go 1.18
+github.com/klauspost/compress/flate
+github.com/klauspost/compress/gzip
+github.com/klauspost/compress/zlib
+# github.com/leodido/go-urn v1.2.1
+## explicit; go 1.13
+github.com/leodido/go-urn
+# github.com/mailru/easyjson v0.7.7
+## explicit; go 1.12
+github.com/mailru/easyjson/buffer
+github.com/mailru/easyjson/jlexer
+github.com/mailru/easyjson/jwriter
+# github.com/mattn/go-colorable v0.1.13
+## explicit; go 1.15
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.20
+## explicit; go 1.15
+github.com/mattn/go-isatty
+# github.com/mattn/go-runewidth v0.0.15
+## explicit; go 1.9
+github.com/mattn/go-runewidth
+# github.com/rivo/uniseg v0.4.3
+## explicit; go 1.18
+github.com/rivo/uniseg
+# github.com/rs/zerolog v1.32.0
+## explicit; go 1.15
+github.com/rs/zerolog
+github.com/rs/zerolog/internal/cbor
+github.com/rs/zerolog/internal/json
+github.com/rs/zerolog/log
+# github.com/swaggo/files/v2 v2.0.0
+## explicit; go 1.16
+github.com/swaggo/files/v2
+# github.com/swaggo/swag v1.16.3
+## explicit; go 1.18
+github.com/swaggo/swag
+# github.com/valyala/bytebufferpool v1.0.0
+## explicit
+github.com/valyala/bytebufferpool
+# github.com/valyala/fasthttp v1.51.0
+## explicit; go 1.20
+github.com/valyala/fasthttp
+github.com/valyala/fasthttp/fasthttputil
+github.com/valyala/fasthttp/reuseport
+github.com/valyala/fasthttp/stackless
+# github.com/valyala/tcplisten v1.0.0
+## explicit; go 1.12
+github.com/valyala/tcplisten
+# go.opentelemetry.io/contrib v1.17.0
+## explicit; go 1.19
+go.opentelemetry.io/contrib
+# go.opentelemetry.io/otel v1.16.0
+## explicit; go 1.19
+go.opentelemetry.io/otel
+go.opentelemetry.io/otel/attribute
+go.opentelemetry.io/otel/baggage
+go.opentelemetry.io/otel/codes
+go.opentelemetry.io/otel/internal
+go.opentelemetry.io/otel/internal/attribute
+go.opentelemetry.io/otel/internal/baggage
+go.opentelemetry.io/otel/internal/global
+go.opentelemetry.io/otel/propagation
+go.opentelemetry.io/otel/semconv/internal
+go.opentelemetry.io/otel/semconv/v1.12.0
+# go.opentelemetry.io/otel/metric v1.16.0
+## explicit; go 1.19
+go.opentelemetry.io/otel/metric
+go.opentelemetry.io/otel/metric/embedded
+# go.opentelemetry.io/otel/trace v1.16.0
+## explicit; go 1.19
+go.opentelemetry.io/otel/trace
+# golang.org/x/crypto v0.14.0
+## explicit; go 1.17
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/blowfish
+golang.org/x/crypto/sha3
+# golang.org/x/sys v0.15.0
+## explicit; go 1.18
+golang.org/x/sys/cpu
+golang.org/x/sys/execabs
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/text v0.13.0
+## explicit; go 1.17
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+# golang.org/x/tools v0.7.0
+## explicit; go 1.18
+golang.org/x/tools/go/ast/astutil
+golang.org/x/tools/go/buildutil
+golang.org/x/tools/go/internal/cgo
+golang.org/x/tools/go/loader
+golang.org/x/tools/internal/typeparams
+# gopkg.in/yaml.v2 v2.4.0
+## explicit; go 1.15
+gopkg.in/yaml.v2
