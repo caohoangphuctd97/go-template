@@ -6,9 +6,11 @@ github.com/KyleBanks/depth
 github.com/andybalholm/brotli
 # github.com/create-go-app/fiber-go-template v1.14.0
 ## explicit; go 1.17
-github.com/create-go-app/fiber-go-template/docs
+github.com/create-go-app/fiber-go-template/app/models
+github.com/create-go-app/fiber-go-template/app/queries
 github.com/create-go-app/fiber-go-template/pkg/repository
 github.com/create-go-app/fiber-go-template/pkg/utils
+github.com/create-go-app/fiber-go-template/platform/database
 # github.com/go-logr/logr v1.2.4
 ## explicit; go 1.16
 github.com/go-logr/logr
@@ -16,18 +18,18 @@ github.com/go-logr/logr/funcr
 # github.com/go-logr/stdr v1.2.2
 ## explicit; go 1.16
 github.com/go-logr/stdr
-# github.com/go-openapi/jsonpointer v0.19.5
-## explicit; go 1.13
+# github.com/go-openapi/jsonpointer v0.21.0
+## explicit; go 1.20
 github.com/go-openapi/jsonpointer
-# github.com/go-openapi/jsonreference v0.20.0
-## explicit; go 1.13
+# github.com/go-openapi/jsonreference v0.21.0
+## explicit; go 1.20
 github.com/go-openapi/jsonreference
 github.com/go-openapi/jsonreference/internal
-# github.com/go-openapi/spec v0.20.6
-## explicit; go 1.13
+# github.com/go-openapi/spec v0.21.0
+## explicit; go 1.20
 github.com/go-openapi/spec
-# github.com/go-openapi/swag v0.21.1
-## explicit; go 1.11
+# github.com/go-openapi/swag v0.23.0
+## explicit; go 1.20
 github.com/go-openapi/swag
 # github.com/go-playground/locales v0.14.0
 ## explicit; go 1.13
@@ -39,6 +41,9 @@ github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.11.0
 ## explicit; go 1.13
 github.com/go-playground/validator/v10
+# github.com/go-sql-driver/mysql v1.6.0
+## explicit; go 1.10
+github.com/go-sql-driver/mysql
 # github.com/gofiber/contrib/otelfiber v1.0.10
 ## explicit; go 1.18
 github.com/gofiber/contrib/otelfiber
@@ -58,6 +63,38 @@ github.com/golang-jwt/jwt/v4
 # github.com/google/uuid v1.5.0
 ## explicit
 github.com/google/uuid
+# github.com/jackc/chunkreader/v2 v2.0.1
+## explicit; go 1.12
+github.com/jackc/chunkreader/v2
+# github.com/jackc/pgconn v1.12.1
+## explicit; go 1.12
+github.com/jackc/pgconn
+github.com/jackc/pgconn/internal/ctxwatch
+github.com/jackc/pgconn/stmtcache
+# github.com/jackc/pgio v1.0.0
+## explicit; go 1.12
+github.com/jackc/pgio
+# github.com/jackc/pgpassfile v1.0.0
+## explicit; go 1.12
+github.com/jackc/pgpassfile
+# github.com/jackc/pgproto3/v2 v2.3.0
+## explicit; go 1.12
+github.com/jackc/pgproto3/v2
+# github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b
+## explicit; go 1.14
+github.com/jackc/pgservicefile
+# github.com/jackc/pgtype v1.11.0
+## explicit; go 1.13
+github.com/jackc/pgtype
+# github.com/jackc/pgx/v4 v4.16.1
+## explicit; go 1.13
+github.com/jackc/pgx/v4
+github.com/jackc/pgx/v4/internal/sanitize
+github.com/jackc/pgx/v4/stdlib
+# github.com/jmoiron/sqlx v1.3.5
+## explicit; go 1.10
+github.com/jmoiron/sqlx
+github.com/jmoiron/sqlx/reflectx
 # github.com/joho/godotenv v1.5.1
 ## explicit; go 1.12
 github.com/joho/godotenv
@@ -73,6 +110,11 @@ github.com/klauspost/compress/zlib
 # github.com/leodido/go-urn v1.2.1
 ## explicit; go 1.13
 github.com/leodido/go-urn
+# github.com/lib/pq v1.10.2
+## explicit; go 1.13
+github.com/lib/pq
+github.com/lib/pq/oid
+github.com/lib/pq/scram
 # github.com/mailru/easyjson v0.7.7
 ## explicit; go 1.12
 github.com/mailru/easyjson/buffer
@@ -137,30 +179,46 @@ go.opentelemetry.io/otel/metric/embedded
 # go.opentelemetry.io/otel/trace v1.16.0
 ## explicit; go 1.19
 go.opentelemetry.io/otel/trace
+# go.uber.org/dig v1.17.1
+## explicit; go 1.20
+go.uber.org/dig
+go.uber.org/dig/internal/digerror
+go.uber.org/dig/internal/digreflect
+go.uber.org/dig/internal/dot
+go.uber.org/dig/internal/graph
 # golang.org/x/crypto v0.14.0
 ## explicit; go 1.17
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
+golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/sha3
-# golang.org/x/sys v0.15.0
+# golang.org/x/sys v0.18.0
 ## explicit; go 1.18
 golang.org/x/sys/cpu
-golang.org/x/sys/execabs
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.13.0
-## explicit; go 1.17
+# golang.org/x/text v0.14.0
+## explicit; go 1.18
+golang.org/x/text/cases
+golang.org/x/text/internal
 golang.org/x/text/internal/language
 golang.org/x/text/internal/language/compact
 golang.org/x/text/internal/tag
 golang.org/x/text/language
-# golang.org/x/tools v0.7.0
-## explicit; go 1.18
+golang.org/x/text/runes
+golang.org/x/text/secure/bidirule
+golang.org/x/text/secure/precis
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/width
+# golang.org/x/tools v0.19.0
+## explicit; go 1.19
 golang.org/x/tools/go/ast/astutil
 golang.org/x/tools/go/buildutil
 golang.org/x/tools/go/internal/cgo
 golang.org/x/tools/go/loader
-golang.org/x/tools/internal/typeparams
-# gopkg.in/yaml.v2 v2.4.0
-## explicit; go 1.15
-gopkg.in/yaml.v2
+golang.org/x/tools/internal/versions
+# gopkg.in/yaml.v3 v3.0.1
+## explicit
+gopkg.in/yaml.v3

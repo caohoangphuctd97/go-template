@@ -3,15 +3,13 @@ package main
 import (
 	"os"
 
+	routes "github.com/caohoangphuctd97/go-test/internal/app/routers"
 	"github.com/caohoangphuctd97/go-test/pkg/configs"
-	routes "github.com/caohoangphuctd97/go-test/pkg/routers"
 	"github.com/create-go-app/fiber-go-template/pkg/utils"
 	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-
-	_ "github.com/create-go-app/fiber-go-template/docs" // load API Docs files (Swagger)
 
 	_ "github.com/joho/godotenv/autoload" // load .env file automatically
 )
@@ -41,10 +39,7 @@ func main() {
 
 	// Routes.
 	routes.SwaggerRoute(app) // Register a swagger APIs
-
-	// routes.PublicRoutes(app)  // Register a public routes for app.
-	// routes.PrivateRoutes(app) // Register a private routes for app.
-	// routes.NotFoundRoute(app) // Register route for 404 Error.
+	routes.BookRoutes(app)   // Register a public routes for app.
 
 	app.Listen("0.0.0.0:8080")
 	// Start server (with or without graceful shutdown).
