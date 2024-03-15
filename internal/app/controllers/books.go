@@ -7,7 +7,7 @@ import (
 	"github.com/caohoangphuctd97/go-test/internal/app/models"
 	"github.com/create-go-app/fiber-go-template/pkg/repository"
 	"github.com/create-go-app/fiber-go-template/pkg/utils"
-	"github.com/create-go-app/fiber-go-template/platform/database"
+	"github.com/rs/zerolog/log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -23,7 +23,7 @@ import (
 // @Router /v1/books [get]
 func GetBooks(c *fiber.Ctx) error {
 	// Create database connection.
-	db, err := database.OpenDBConnection()
+	db, err := databases.OpenDBConnection()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -73,7 +73,7 @@ func GetBook(c *fiber.Ctx) error {
 	}
 
 	// Create database connection.
-	db, err := database.OpenDBConnection()
+	db, err := databases.OpenDBConnection()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -107,9 +107,8 @@ func GetBook(c *fiber.Ctx) error {
 // @Tags Book
 // @Accept json
 // @Produce json
-// @Param title body string true "Title"
-// @Param author body string true "Author"
-// @Success 200
+// @Param body body models.Book true "Book payload"
+// @Success 200 {object} models.Book
 // @Security ApiKeyAuth
 // @Router /v1/book [post]
 func CreateBook(c *fiber.Ctx) error {
@@ -127,8 +126,9 @@ func CreateBook(c *fiber.Ctx) error {
 	}
 
 	// Create database connection.
-	db, err := databases.NewDatabases()
+	db, err := databases.OpenDBConnection()
 	if err != nil {
+		log.Error().Msg(err.Error())
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
@@ -142,7 +142,7 @@ func CreateBook(c *fiber.Ctx) error {
 	// Set initialized default data for book:
 	book.ID = uuid.New()
 	book.CreatedAt = time.Now()
-	book.UserID = claims.UserID
+	book.UpdatedAt = time.Now()
 	book.BookStatus = 1 // 0 == draft, 1 == active
 
 	// Validate book fields.
@@ -236,7 +236,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	}
 
 	// Create database connection.
-	db, err := database.OpenDBConnection()
+	db, err := databases.OpenDBConnection()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -255,47 +255,35 @@ func UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Set user ID from JWT data of current user.
-	userID := claims.UserID
+	// Set initialized default data for book:
+	book.UpdatedAt = time.Now()
 
-	// Only the creator can delete his book.
-	if foundedBook.UserID == userID {
-		// Set initialized default data for book:
-		book.UpdatedAt = time.Now()
+	// Create a new validator for a Book model.
+	validate := utils.NewValidator()
 
-		// Create a new validator for a Book model.
-		validate := utils.NewValidator()
-
-		// Validate book fields.
-		if err := validate.Struct(book); err != nil {
-			// Return, if some fields are not valid.
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": true,
-				"msg":   utils.ValidatorErrors(err),
-			})
-		}
-
-		// Update book by given ID.
-		if err := db.UpdateBook(foundedBook.ID, book); err != nil {
-			// Return status 500 and error message.
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": true,
-				"msg":   err.Error(),
-			})
-		}
-
-		// Return status 201.
-		return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-			"error": false,
-			"msg":   nil,
-		})
-	} else {
-		// Return status 403 and permission denied error message.
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
+	// Validate book fields.
+	if err := validate.Struct(book); err != nil {
+		// Return, if some fields are not valid.
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
-			"msg":   "permission denied, only the creator can delete his book",
+			"msg":   utils.ValidatorErrors(err),
 		})
 	}
+
+	// Update book by given ID.
+	if err := db.UpdateBook(foundedBook.ID, book); err != nil {
+		// Return status 500 and error message.
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": true,
+			"msg":   err.Error(),
+		})
+	}
+
+	// Return status 201.
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"error": false,
+		"msg":   nil,
+	})
 }
 
 // DeleteBook func for deletes book by given ID.
@@ -371,7 +359,7 @@ func DeleteBook(c *fiber.Ctx) error {
 	}
 
 	// Create database connection.
-	db, err := database.OpenDBConnection()
+	db, err := databases.OpenDBConnection()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -390,27 +378,15 @@ func DeleteBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Set user ID from JWT data of current user.
-	userID := claims.UserID
-
-	// Only the creator can delete his book.
-	if foundedBook.UserID == userID {
-		// Delete book by given ID.
-		if err := db.DeleteBook(foundedBook.ID); err != nil {
-			// Return status 500 and error message.
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": true,
-				"msg":   err.Error(),
-			})
-		}
-
-		// Return status 204 no content.
-		return c.SendStatus(fiber.StatusNoContent)
-	} else {
-		// Return status 403 and permission denied error message.
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
+	// Delete book by given ID.
+	if err := db.DeleteBook(foundedBook.ID); err != nil {
+		// Return status 500 and error message.
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
-			"msg":   "permission denied, only the creator can delete his book",
+			"msg":   err.Error(),
 		})
 	}
+
+	// Return status 204 no content.
+	return c.SendStatus(fiber.StatusNoContent)
 }

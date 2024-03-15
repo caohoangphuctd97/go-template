@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/caarlos0/env/v10"
+	"github.com/caohoangphuctd97/go-test/internal/app/queries"
 	"github.com/jmoiron/sqlx"
-
 	"go.uber.org/dig"
 
 	// postgres driver
-	"github.com/create-go-app/fiber-go-template/app/queries"
 	_ "github.com/lib/pq"
 )
 
@@ -19,27 +19,30 @@ type (
 		dig.Out
 		Pg *sql.DB `name:"pg"`
 	}
-	// DatabaseCfg is MySQL configuration
-	// @envconfig (prefix:"PG" ctor:"pg")
-	// // @envconfig (prefix:"MYSQL" ctor:"mysql")
-	DatabaseCfg struct {
-		DBName string `envconfig:"DBNAME" required:"true" default:"dbname"`
-		DBUser string `envconfig:"DBUSER" required:"true" default:"dbuser"`
-		DBPass string `envconfig:"DBPASS" required:"true" default:"dbpass"`
-		Host   string `envconfig:"HOST" required:"true" default:"localhost"`
-		Port   string `envconfig:"PORT" required:"true" default:"9999"`
 
-		MaxOpenConns    int           `envconfig:"MAX_OPEN_CONNS" default:"30" required:"true"`
-		MaxIdleConns    int           `envconfig:"MAX_IDLE_CONNS" default:"6" required:"true"`
-		ConnMaxLifetime time.Duration `envconfig:"CONN_MAX_LIFETIME" default:"30m" required:"true"`
+	DatabaseCfg struct {
+		DBName string `env:"DBNAME" envDefault:"dbname"`
+		DBUser string `env:"DBUSER" envDefault:"dbuser"`
+		DBPass string `env:"DBPASS" envDefault:"dbpass"`
+		Host   string `env:"HOST" envDefault:"localhost"`
+		Port   string `env:"PORT" envDefault:"9999"`
+
+		MaxOpenConns    int           `env:"MAX_OPEN_CONNS" envDefault:"30"`
+		MaxIdleConns    int           `env:"MAX_IDLE_CONNS" envDefault:"6"`
+		ConnMaxLifetime time.Duration `env:"CONN_MAX_LIFETIME" envDefault:"30m"`
 	}
 )
+
+type Queries struct {
+	*queries.BookQueries // load queries from Book model
+}
 
 // OpenDBConnection func for opening database connection.
 func OpenDBConnection() (*Queries, error) {
 
-	dbConfig := &DatabaseCfg{}
-	db := openPostgres(dbConfig)
+	dbConfig := DatabaseCfg{}
+	env.Parse(&dbConfig)
+	db := openPostgres(&dbConfig)
 
 	return &Queries{
 		BookQueries: &queries.BookQueries{DB: db}, // from Book model

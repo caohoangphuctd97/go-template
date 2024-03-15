@@ -1,4 +1,27 @@
 basePath: /api
+definitions:
+  models.Book:
+    properties:
+      author:
+        maxLength: 255
+        type: string
+      book_status:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        maxLength: 255
+        type: string
+      updated_at:
+        type: string
+    required:
+    - author
+    - book_status
+    - id
+    - title
+    type: object
 info:
   contact: {}
   description: 'This is a swagger for go exercise #2.'
@@ -38,23 +61,19 @@ paths:
       - application/json
       description: Create a new book.
       parameters:
-      - description: Title
+      - description: Book payload
         in: body
-        name: title
+        name: body
         required: true
         schema:
-          type: string
-      - description: Author
-        in: body
-        name: author
-        required: true
-        schema:
-          type: string
+          $ref: '#/definitions/models.Book'
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
       security:
       - ApiKeyAuth: []
       summary: create a new book
