@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jmoiron/sqlx"
+
 	"go.uber.org/dig"
 
 	// postgres driver
+	"github.com/create-go-app/fiber-go-template/app/queries"
 	_ "github.com/lib/pq"
 )
 
@@ -15,12 +18,6 @@ type (
 	Databases struct {
 		dig.Out
 		Pg *sql.DB `name:"pg"`
-	}
-
-	// Databases setup output
-	DatabaseCfgs struct {
-		dig.In
-		Pg *DatabaseCfg `name:"pg"`
 	}
 	// DatabaseCfg is MySQL configuration
 	// @envconfig (prefix:"PG" ctor:"pg")
@@ -38,20 +35,23 @@ type (
 	}
 )
 
-// NewDatabases return new instance of databases
-// @ctor
-func NewDatabases(cfgs DatabaseCfgs) Databases {
-	return Databases{
-		Pg: openPostgres(cfgs.Pg),
-	}
+// OpenDBConnection func for opening database connection.
+func OpenDBConnection() (*Queries, error) {
+
+	dbConfig := &DatabaseCfg{}
+	db := openPostgres(dbConfig)
+
+	return &Queries{
+		BookQueries: &queries.BookQueries{DB: db}, // from Book model
+	}, nil
 }
 
-func openPostgres(p *DatabaseCfg) *sql.DB {
+func openPostgres(p *DatabaseCfg) *sqlx.DB {
 	conn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
 		p.DBUser, p.DBPass, p.Host, p.Port, p.DBName,
 	)
-	db, err := sql.Open("postgres", conn)
+	db, err := sqlx.Open("postgres", conn)
 	if err != nil {
 		fmt.Errorf("postgres: %s", err.Error())
 	}

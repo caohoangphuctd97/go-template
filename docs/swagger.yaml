@@ -8,7 +8,137 @@ info:
   termsOfService: http://swagger.io/terms/
   title: 'GO exercise #2'
   version: "1.0"
-paths: {}
+paths:
+  /v1/book:
+    delete:
+      consumes:
+      - application/json
+      description: Delete book by given ID.
+      parameters:
+      - description: Book ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: delete book by given ID
+      tags:
+      - Book
+    post:
+      consumes:
+      - application/json
+      description: Create a new book.
+      parameters:
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: Author
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: create a new book
+      tags:
+      - Book
+    put:
+      consumes:
+      - application/json
+      description: Update book.
+      parameters:
+      - description: Book ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Title
+        in: body
+        name: title
+        required: true
+        schema:
+          type: string
+      - description: Author
+        in: body
+        name: author
+        required: true
+        schema:
+          type: string
+      - description: User ID
+        in: body
+        name: user_id
+        required: true
+        schema:
+          type: string
+      - description: Book status
+        in: body
+        name: book_status
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: ok
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: update book
+      tags:
+      - Book
+  /v1/book/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get book by given ID.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get book by given ID
+      tags:
+      - Book
+  /v1/books:
+    get:
+      consumes:
+      - application/json
+      description: Get all exists books.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get all exists books
+      tags:
+      - Books
 securityDefinitions:
   ApiKeyAuth:
     in: header

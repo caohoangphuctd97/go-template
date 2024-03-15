@@ -4,10 +4,11 @@ import (
 	"time"
 
 	"github.com/caohoangphuctd97/go-test/internal/app/databases"
-	"github.com/create-go-app/fiber-go-template/app/models"
+	"github.com/caohoangphuctd97/go-test/internal/app/models"
 	"github.com/create-go-app/fiber-go-template/pkg/repository"
 	"github.com/create-go-app/fiber-go-template/pkg/utils"
 	"github.com/create-go-app/fiber-go-template/platform/database"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -18,11 +19,11 @@ import (
 // @Tags Books
 // @Accept json
 // @Produce json
-// @Success 200 {array} models.Book
+// @Success 200
 // @Router /v1/books [get]
 func GetBooks(c *fiber.Ctx) error {
 	// Create database connection.
-	db, err := databases.NewDatabases()
+	db, err := database.OpenDBConnection()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -59,7 +60,7 @@ func GetBooks(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "Book ID"
-// @Success 200 {object} models.Book
+// @Success 200
 // @Router /v1/book/{id} [get]
 func GetBook(c *fiber.Ctx) error {
 	// Catch book ID from URL.
@@ -108,48 +109,10 @@ func GetBook(c *fiber.Ctx) error {
 // @Produce json
 // @Param title body string true "Title"
 // @Param author body string true "Author"
-// @Param user_id body string true "User ID"
-// @Param book_attrs body models.BookAttrs true "Book attributes"
-// @Success 200 {object} models.Book
+// @Success 200
 // @Security ApiKeyAuth
 // @Router /v1/book [post]
 func CreateBook(c *fiber.Ctx) error {
-	// Get now time.
-	now := time.Now().Unix()
-
-	// Get claims from JWT.
-	claims, err := utils.ExtractTokenMetadata(c)
-	if err != nil {
-		// Return status 500 and JWT parse error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
-
-	// Set expiration time from JWT data of current book.
-	expires := claims.Expires
-
-	// Checking, if now time greather than expiration from JWT.
-	if now > expires {
-		// Return status 401 and unauthorized error message.
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": true,
-			"msg":   "unauthorized, check expiration time of your token",
-		})
-	}
-
-	// Set credential `book:create` from JWT data of current book.
-	credential := claims.Credentials[repository.BookCreateCredential]
-
-	// Only user with `book:create` credential can create a new book.
-	if !credential {
-		// Return status 403 and permission denied error message.
-		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{
-			"error": true,
-			"msg":   "permission denied, check credentials of your token",
-		})
-	}
 
 	// Create new Book struct
 	book := &models.Book{}
@@ -164,7 +127,7 @@ func CreateBook(c *fiber.Ctx) error {
 	}
 
 	// Create database connection.
-	db, err := database.OpenDBConnection()
+	db, err := databases.NewDatabases()
 	if err != nil {
 		// Return status 500 and database connection error.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -219,7 +182,6 @@ func CreateBook(c *fiber.Ctx) error {
 // @Param author body string true "Author"
 // @Param user_id body string true "User ID"
 // @Param book_status body integer true "Book status"
-// @Param book_attrs body models.BookAttrs true "Book attributes"
 // @Success 202 {string} status "ok"
 // @Security ApiKeyAuth
 // @Router /v1/book [put]
