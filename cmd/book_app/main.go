@@ -5,8 +5,8 @@ import (
 
 	routes "github.com/caohoangphuctd97/go-test/internal/app/routers"
 	"github.com/caohoangphuctd97/go-test/pkg/configs"
+	middleware "github.com/caohoangphuctd97/go-test/pkg/middlewares"
 	"github.com/create-go-app/fiber-go-template/pkg/utils"
-	"github.com/gofiber/contrib/otelfiber"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -35,7 +35,7 @@ func main() {
 	app := fiber.New(config)
 
 	// Middlewares.
-	app.Use(otelfiber.Middleware())
+	middleware.FiberMiddleware(app) // Register Fiber's middleware for app.
 
 	// Routes.
 	routes.SwaggerRoute(app) // Register a swagger APIs

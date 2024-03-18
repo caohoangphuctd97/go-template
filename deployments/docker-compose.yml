@@ -32,6 +32,12 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+  
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
 
 networks:
   postgres:

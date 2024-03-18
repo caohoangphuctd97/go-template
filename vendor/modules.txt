@@ -7,10 +7,16 @@ github.com/andybalholm/brotli
 # github.com/caarlos0/env/v10 v10.0.0
 ## explicit; go 1.17
 github.com/caarlos0/env/v10
+# github.com/cespare/xxhash/v2 v2.1.2
+## explicit; go 1.11
+github.com/cespare/xxhash/v2
 # github.com/create-go-app/fiber-go-template v1.14.0
 ## explicit; go 1.17
 github.com/create-go-app/fiber-go-template/pkg/repository
 github.com/create-go-app/fiber-go-template/pkg/utils
+# github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
+## explicit
+github.com/dgryski/go-rendezvous
 # github.com/go-logr/logr v1.2.4
 ## explicit; go 1.16
 github.com/go-logr/logr
@@ -41,15 +47,29 @@ github.com/go-playground/universal-translator
 # github.com/go-playground/validator/v10 v10.11.0
 ## explicit; go 1.13
 github.com/go-playground/validator/v10
+# github.com/go-redis/redis/v8 v8.11.5
+## explicit; go 1.17
+github.com/go-redis/redis/v8
+github.com/go-redis/redis/v8/internal
+github.com/go-redis/redis/v8/internal/hashtag
+github.com/go-redis/redis/v8/internal/hscan
+github.com/go-redis/redis/v8/internal/pool
+github.com/go-redis/redis/v8/internal/proto
+github.com/go-redis/redis/v8/internal/rand
+github.com/go-redis/redis/v8/internal/util
 # github.com/gofiber/contrib/otelfiber v1.0.10
 ## explicit; go 1.18
 github.com/gofiber/contrib/otelfiber
 # github.com/gofiber/fiber/v2 v2.52.2
 ## explicit; go 1.20
 github.com/gofiber/fiber/v2
+github.com/gofiber/fiber/v2/internal/memory
 github.com/gofiber/fiber/v2/internal/schema
 github.com/gofiber/fiber/v2/log
+github.com/gofiber/fiber/v2/middleware/cache
+github.com/gofiber/fiber/v2/middleware/cors
 github.com/gofiber/fiber/v2/middleware/filesystem
+github.com/gofiber/fiber/v2/middleware/logger
 github.com/gofiber/fiber/v2/utils
 # github.com/gofiber/swagger v1.0.0
 ## explicit; go 1.18
@@ -98,6 +118,9 @@ github.com/mattn/go-isatty
 # github.com/mattn/go-runewidth v0.0.15
 ## explicit; go 1.9
 github.com/mattn/go-runewidth
+# github.com/philhofer/fwd v1.1.2
+## explicit; go 1.15
+github.com/philhofer/fwd
 # github.com/rivo/uniseg v0.4.3
 ## explicit; go 1.18
 github.com/rivo/uniseg
@@ -113,6 +136,9 @@ github.com/swaggo/files/v2
 # github.com/swaggo/swag v1.16.3
 ## explicit; go 1.18
 github.com/swaggo/swag
+# github.com/tinylib/msgp v1.1.8
+## explicit; go 1.15
+github.com/tinylib/msgp/msgp
 # github.com/valyala/bytebufferpool v1.0.0
 ## explicit
 github.com/valyala/bytebufferpool
