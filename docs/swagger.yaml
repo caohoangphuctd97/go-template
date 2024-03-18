@@ -5,8 +5,6 @@ definitions:
       author:
         maxLength: 255
         type: string
-      book_status:
-        type: integer
       created_at:
         type: string
       id:
@@ -18,7 +16,6 @@ definitions:
         type: string
     required:
     - author
-    - book_status
     - id
     - title
     type: object
@@ -33,29 +30,6 @@ info:
   version: "1.0"
 paths:
   /v1/book:
-    delete:
-      consumes:
-      - application/json
-      description: Delete book by given ID.
-      parameters:
-      - description: Book ID
-        in: body
-        name: id
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: ok
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: delete book by given ID
-      tags:
-      - Book
     post:
       consumes:
       - application/json
@@ -74,59 +48,30 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Book'
-      security:
-      - ApiKeyAuth: []
       summary: create a new book
       tags:
       - Book
-    put:
+  /v1/book/{id}:
+    delete:
       consumes:
       - application/json
-      description: Update book.
+      description: Delete book by given ID.
       parameters:
       - description: Book ID
-        in: body
+        in: path
         name: id
         required: true
-        schema:
-          type: string
-      - description: Title
-        in: body
-        name: title
-        required: true
-        schema:
-          type: string
-      - description: Author
-        in: body
-        name: author
-        required: true
-        schema:
-          type: string
-      - description: User ID
-        in: body
-        name: user_id
-        required: true
-        schema:
-          type: string
-      - description: Book status
-        in: body
-        name: book_status
-        required: true
-        schema:
-          type: integer
+        type: string
       produces:
       - application/json
       responses:
-        "202":
+        "204":
           description: ok
           schema:
             type: string
-      security:
-      - ApiKeyAuth: []
-      summary: update book
+      summary: delete book by given ID
       tags:
       - Book
-  /v1/book/{id}:
     get:
       consumes:
       - application/json
@@ -143,6 +88,32 @@ paths:
         "200":
           description: OK
       summary: get book by given ID
+      tags:
+      - Book
+    patch:
+      consumes:
+      - application/json
+      description: Update book.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ok
+          schema:
+            type: string
+      summary: update book
       tags:
       - Book
   /v1/books:

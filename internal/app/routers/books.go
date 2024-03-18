@@ -17,9 +17,9 @@ func BookRoutes(a *fiber.App) {
 	// Routes for POST method:
 	route.Post("/book", controllers.CreateBook) // create a new book
 
-	// Routes for PUT method:
-	route.Put("/book", controllers.UpdateBook) // update one book by ID
+	// Routes for PATCH method:
+	route.Patch("/book/:id", controllers.UpdateBook) // update one book by ID
 
 	// Routes for DELETE method:
-	route.Delete("/book", controllers.DeleteBook) // delete one book by ID
+	route.Delete("/book/:id", controllers.DeleteBook) // delete one book by ID
 }
