@@ -10,8 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-
-	_ "github.com/joho/godotenv/autoload" // load .env file automatically
 )
 
 // @title GO exercise #2
