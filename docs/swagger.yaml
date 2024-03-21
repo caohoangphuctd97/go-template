@@ -1,0 +1,137 @@
+basePath: /api
+definitions:
+  models.Book:
+    properties:
+      author:
+        maxLength: 255
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      title:
+        maxLength: 255
+        type: string
+      updated_at:
+        type: string
+    required:
+    - author
+    - id
+    - title
+    type: object
+info:
+  contact: {}
+  description: 'This is a swagger for go exercise #2.'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: 'GO exercise #2'
+  version: "1.0"
+paths:
+  /v1/book:
+    post:
+      consumes:
+      - application/json
+      description: Create a new book.
+      parameters:
+      - description: Book payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: create a new book
+      tags:
+      - Book
+  /v1/book/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete book by given ID.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ok
+          schema:
+            type: string
+      summary: delete book by given ID
+      tags:
+      - Book
+    get:
+      consumes:
+      - application/json
+      description: Get book by given ID.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get book by given ID
+      tags:
+      - Book
+    patch:
+      consumes:
+      - application/json
+      description: Update book.
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ok
+          schema:
+            type: string
+      summary: update book
+      tags:
+      - Book
+  /v1/books:
+    get:
+      consumes:
+      - application/json
+      description: Get all exists books.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: get all exists books
+      tags:
+      - Books
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
