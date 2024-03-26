@@ -3,14 +3,33 @@ package controllers
 import (
 	"time"
 
-	"github.com/caohoangphuctd97/go-test/internal/app/databases"
-	"github.com/caohoangphuctd97/go-test/internal/app/models"
+	"github.com/caohoangphuctd97/go-test/internal/app/repo"
 	"github.com/create-go-app/fiber-go-template/pkg/utils"
-	"github.com/rs/zerolog/log"
+	"go.uber.org/dig"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
+
+type (
+	BookSvc interface {
+		GetBooks(c *fiber.Ctx) error
+		GetBook(c *fiber.Ctx) error
+		// Create(context.Context, *repo.Book) (*repo.Book, error)
+		// Delete(context.Context, string) error
+		// Update(context.Context, string, *repo.Book) (*repo.Book, error)
+		// Patch(context.Context, string, *repo.Book) (*repo.Book, error)
+	}
+	// BookSvcImpl is implementation of BookSvc
+	BookSvcImpl struct {
+		dig.In
+		Repo repo.BookRepo
+	}
+)
+
+func NewBookSvc(impl BookSvcImpl) BookSvc {
+	return &impl
+}
 
 // GetBooks func gets all exists books.
 // @Description Get all exists books.
@@ -20,19 +39,10 @@ import (
 // @Produce json
 // @Success 200
 // @Router /v1/books [get]
-func GetBooks(c *fiber.Ctx) error {
-	// Create database connection.
-	db, err := databases.OpenDBConnection()
-	if err != nil {
-		// Return status 500 and database connection error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
+func (b *BookSvcImpl) GetBooks(c *fiber.Ctx) error {
 
 	// Get all books.
-	books, err := db.GetBooks()
+	books, err := b.Repo.GetBooks()
 	if err != nil {
 		// Return, if books not found.
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -61,7 +71,7 @@ func GetBooks(c *fiber.Ctx) error {
 // @Param id path string true "Book ID"
 // @Success 200
 // @Router /v1/book/{id} [get]
-func GetBook(c *fiber.Ctx) error {
+func (b *BookSvcImpl) GetBook(c *fiber.Ctx) error {
 	// Catch book ID from URL.
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
@@ -71,18 +81,8 @@ func GetBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Create database connection.
-	db, err := databases.OpenDBConnection()
-	if err != nil {
-		// Return status 500 and database connection error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
-
 	// Get book by ID.
-	book, err := db.GetBook(id)
+	book, err := b.Repo.GetBook(id)
 	if err != nil {
 		// Return, if book not found.
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -109,26 +109,15 @@ func GetBook(c *fiber.Ctx) error {
 // @Param body body models.Book true "Book payload"
 // @Success 200 {object} models.Book
 // @Router /v1/book [post]
-func CreateBook(c *fiber.Ctx) error {
+func (b *BookSvcImpl) CreateBook(c *fiber.Ctx) error {
 
 	// Create new Book struct
-	book := &models.Book{}
+	book := &repo.Book{}
 
 	// Check, if received JSON data is valid.
 	if err := c.BodyParser(book); err != nil {
 		// Return status 400 and error message.
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
-
-	// Create database connection.
-	db, err := databases.OpenDBConnection()
-	if err != nil {
-		log.Error().Msg(err.Error())
-		// Return status 500 and database connection error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
 			"msg":   err.Error(),
 		})
@@ -152,7 +141,7 @@ func CreateBook(c *fiber.Ctx) error {
 	}
 
 	// Create book by given model.
-	if err := db.CreateBook(book); err != nil {
+	if err := b.Repo.CreateBook(book); err != nil {
 		// Return status 500 and error message.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
