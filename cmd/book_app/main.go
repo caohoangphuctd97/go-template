@@ -6,11 +6,17 @@ import (
 	routes "github.com/caohoangphuctd97/go-test/internal/app/routers"
 	"github.com/caohoangphuctd97/go-test/pkg/configs"
 	middleware "github.com/caohoangphuctd97/go-test/pkg/middlewares"
-	"github.com/create-go-app/fiber-go-template/pkg/utils"
+	"github.com/caohoangphuctd97/go-test/pkg/typapp"
+	"github.com/caohoangphuctd97/go-test/pkg/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	// Important to enable dependency injection
+	_ "github.com/caohoangphuctd97/go-test/internal/generated/ctor"
 )
+
+var BookRoutes routes.BookRoutes
 
 // @title GO exercise #2
 // @version 1.0
@@ -27,7 +33,17 @@ func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFieldFormat
 
 	log.Info().Msg("Start server")
+
 	config := configs.FiberConfig()
+
+	err := typapp.Invoke(
+		func(r routes.BookRoutes) {
+			BookRoutes = r
+		},
+	)
+	if err != nil {
+		panic(err)
+	}
 
 	// Define a new Fiber app with config.
 	app := fiber.New(config)
@@ -37,9 +53,8 @@ func main() {
 
 	// Routes.
 	routes.SwaggerRoute(app) // Register a swagger APIs
-	routes.BookRoutes(app)   // Register a public routes for app.
+	BookRoutes.SetRoute(app) // Register a public routes for app.
 
-	app.Listen("0.0.0.0:8080")
 	// Start server (with or without graceful shutdown).
 	if os.Getenv("STAGE_STATUS") == "dev" {
 		utils.StartServer(app)

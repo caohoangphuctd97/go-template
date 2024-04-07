@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/caohoangphuctd97/go-test/internal/app/repo"
-	"github.com/create-go-app/fiber-go-template/pkg/utils"
+	"github.com/caohoangphuctd97/go-test/pkg/utils"
 	"go.uber.org/dig"
 
 	"github.com/gofiber/fiber/v2"
@@ -15,10 +15,9 @@ type (
 	BookSvc interface {
 		GetBooks(c *fiber.Ctx) error
 		GetBook(c *fiber.Ctx) error
-		// Create(context.Context, *repo.Book) (*repo.Book, error)
-		// Delete(context.Context, string) error
-		// Update(context.Context, string, *repo.Book) (*repo.Book, error)
-		// Patch(context.Context, string, *repo.Book) (*repo.Book, error)
+		UpdateBook(c *fiber.Ctx) error
+		CreateBook(c *fiber.Ctx) error
+		DeleteBook(c *fiber.Ctx) error
 	}
 	// BookSvcImpl is implementation of BookSvc
 	BookSvcImpl struct {
@@ -167,7 +166,7 @@ func (b *BookSvcImpl) CreateBook(c *fiber.Ctx) error {
 // @Param body body models.Book true "Book payload"
 // @Success 204 {string} status "ok"
 // @Router /v1/book/{id} [patch]
-func UpdateBook(c *fiber.Ctx) error {
+func (b *BookSvcImpl) UpdateBook(c *fiber.Ctx) error {
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -177,7 +176,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	}
 
 	// Create new Book struct
-	book := &models.Book{}
+	book := &repo.Book{}
 
 	// Check, if received JSON data is valid.
 	if err := c.BodyParser(book); err != nil {
@@ -188,19 +187,9 @@ func UpdateBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Create database connection.
-	db, err := databases.OpenDBConnection()
-	if err != nil {
-		// Return status 500 and database connection error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
-
 	book.ID = id
 	// Checking, if book with given ID is exists.
-	foundedBook, err := db.GetBook(book.ID)
+	foundedBook, err := b.Repo.GetBook(book.ID)
 	if err != nil {
 		// Return status 404 and book not found error.
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -225,7 +214,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	}
 
 	// Update book by given ID.
-	if err := db.UpdateBook(foundedBook.ID, book); err != nil {
+	if err := b.Repo.UpdateBook(foundedBook.ID, book); err != nil {
 		// Return status 500 and error message.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
@@ -249,7 +238,7 @@ func UpdateBook(c *fiber.Ctx) error {
 // @Param id path string true "Book ID"
 // @Success 204 {string} status "ok"
 // @Router /v1/book/{id} [delete]
-func DeleteBook(c *fiber.Ctx) error {
+func (b *BookSvcImpl) DeleteBook(c *fiber.Ctx) error {
 
 	id, err := uuid.Parse(c.Params("id"))
 	if err != nil {
@@ -259,18 +248,8 @@ func DeleteBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Create database connection.
-	db, err := databases.OpenDBConnection()
-	if err != nil {
-		// Return status 500 and database connection error.
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   err.Error(),
-		})
-	}
-
 	// Checking, if book with given ID is exists.
-	foundedBook, err := db.GetBook(id)
+	foundedBook, err := b.Repo.GetBook(id)
 	if err != nil {
 		// Return status 404 and book not found error.
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -280,7 +259,7 @@ func DeleteBook(c *fiber.Ctx) error {
 	}
 
 	// Delete book by given ID.
-	if err := db.DeleteBook(foundedBook.ID); err != nil {
+	if err := b.Repo.DeleteBook(foundedBook.ID); err != nil {
 		// Return status 500 and error message.
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": true,
